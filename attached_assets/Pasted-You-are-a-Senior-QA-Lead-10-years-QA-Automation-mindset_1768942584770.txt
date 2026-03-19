@@ -1,0 +1,124 @@
+You are a Senior QA Lead (10+ years) + QA Automation mindset. 
+Your task is to do a FULL PLATFORM AUDIT of the Monoskin ERP (web app) from all angles and produce a development-ready ticket backlog.
+
+INPUTS / SOURCES OF TRUTH (must be fully used)
+1) “Bug List _ Monoskin.xlsx” (attached)
+2) “Changes in Figma _ Monoskin.docx” (attached)
+3) The current UI build (staging URL provided by me) — open and click through every page and every action
+4) The “Monoskin Client Feedback Master Backlog” (canvas) if available in this project context (use it to verify nothing is missed)
+
+AUDIT OBJECTIVE
+Verify that:
+- Every navigation item works (no dead pages).
+- Every list page has full CRUD flows (Create/Edit/View/Delete if applicable).
+- Every button, tab, filter, export/import, modal, action menu actually does something meaningful.
+- Anything broken/partial/missing is captured as a ticket with clear repro + expected behavior + acceptance criteria.
+
+IMPORTANT QA MINDSET
+- Be strict: If a feature exists in UI but is only a placeholder / static / non-clickable = FAIL (ticket it).
+- Be strict: If a feature works visually but no real workflow exists (no form, no validation, no backend persistence) = PARTIAL (ticket it).
+- Be strict: If it’s “working” but UX is confusing / missing labels / missing empty states / inconsistent flow = ticket as UX/Polish.
+- Ensure confidentiality & security checks (RBAC/export restrictions/audit logs) are tested.
+
+SCOPE
+This is ERP Admin system (no doctor portal/patient UI/WhatsApp bot UI/e-comm UI/MR app UI). 
+But admin must include MR Directory + MR Profile + Lead assignment to MRs, tracking, and reporting.
+
+WHAT TO AUDIT (coverage checklist)
+A) Navigation & Routing
+- Sidebar/header items
+- Breadcrumbs
+- Deep links
+- Back/forward behavior
+- 404s / blank screens
+
+B) Page-by-page Functional Checks (for every module)
+For each page: 
+- List loads, pagination works, sorting works, search works
+- Filters apply + reset works + URL state preserved (if implemented)
+- Row actions work (view/edit/activity/related)
+- “Create/Add” opens a real form with validations
+- Save works (success toast + state refresh)
+- Error handling exists (API errors, empty states)
+- Loading states exist
+- Export/Import rules (including permission restrictions)
+- Attachments uploads/downloads work where required
+- Status workflows show timeline where required
+
+C) Workflows (end-to-end)
+- Leads → assign MR → follow-up → convert → link to orders (or equivalent)
+- Products → pricing/schemes/promos/clinic codes (as per doc) → usage tracking (if present)
+- Inventory → thresholds → alerts views
+- Orders → invoice generation → shipment → returns → credit note → reconciliation (if applicable)
+- Shipments → label/proof/status timeline → discrepancy workflow
+- Returns → photos/notes/pickup timeline → inventory adjustment → credit note link
+- Finance pages: invoices, statements, collections/reconciliation flows (even if stubbed)
+
+D) Security / Compliance / Confidentiality
+- Login method checks (email + phone, OTP flow if required)
+- RBAC matrix exists? Permissions enforced?
+- Try role-based denial scenarios:
+  - Export restrictions (e.g., pharmacies export only Super Admin)
+  - Access restricted pages
+- Audit log existence: creates updates deletes exports credit notes returns stock adjustments
+- Session behavior: logout, token expiry
+- Input validation, PII exposure (hide sensitive fields where appropriate)
+
+E) UI/UX & Data Quality
+- Labels missing, table headings missing, confusing copy
+- Inconsistent statuses
+- Broken alignment, overflow, responsive issues
+- Empty states and “No data” states
+- Form field formats, placeholders, required fields, masks
+
+HOW TO EXECUTE THE AUDIT (step-by-step)
+1) Build a “Master Requirement Map”:
+   - Extract every feedback line from XLSX + DOCX
+   - Create a checklist row per requirement (unique ID).
+2) Walk the product UI module-by-module and mark each requirement:
+   - PASS / FAIL / PARTIAL / NOT FOUND
+3) For every FAIL/PARTIAL/NOT FOUND:
+   - Create a ticket in the defined format below.
+4) Run “negative testing”:
+   - Try invalid inputs, long strings, missing required fields, large uploads, double submit, refresh mid-form
+5) Produce final outputs:
+   - (1) Audit Summary (counts by severity + modules)
+   - (2) Tickets backlog sorted by severity and dependency order
+   - (3) A requirement-to-status traceability table proving nothing was missed
+
+TICKET OUTPUT FORMAT (must follow exactly)
+For each ticket output as bullet list or table, but with these fields:
+
+Ticket ID:
+Module:
+Page/Route:
+Type: (Bug / Missing Feature / Partial Implementation / UX / Security / Performance)
+Severity: (Blocker/P0, High/P1, Medium/P2, Low/P3)
+Priority: (P0/P1/P2/P3)
+Environment: (Staging URL / local)
+Preconditions:
+Steps to Reproduce:
+Actual Result:
+Expected Result:
+Screenshots/Notes: (if you can capture notes from UI)
+Suspected Cause: (optional)
+Suggested Fix / Implementation Notes:
+Acceptance Criteria:
+Test Cases (at least 3):
+Dependencies: (if any)
+Effort Estimate: (S/M/L)
+
+SEVERITY RULES
+Blocker/P0: core workflow broken, cannot proceed, data loss, major security issue, dead navigation, no create/edit forms where required
+High/P1: major functionality incomplete, wrong calculations, inconsistent status, missing required filters, missing audit trail for critical items
+Medium/P2: minor workflow gaps, missing empty states, minor UI issues
+Low/P3: cosmetics, spacing, optional improvements
+
+FINAL CHECK (MANDATORY)
+At the end, add:
+1) “Not Tested” list (anything you could not verify and why)
+2) “Top 10 Critical Fixes” in execution order
+3) “Regression Checklist” for after fixes
+
+Now perform the audit and generate the outputs.
+DO NOT skip anything from the XLSX/DOCX requirements.

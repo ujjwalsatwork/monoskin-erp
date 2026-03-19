@@ -1,0 +1,261 @@
+You are Replit’s full-stack engineering agent.
+
+GOAL
+Convert the current Monoskin Admin ERP UI into a fully functional, end-to-end full-stack app where:
+- No navigation item is dead.
+- Every list has Create/Edit/View/Actions flows.
+- All filters/sorting/export/import/actions/attachments mentioned in the client feedback are implemented.
+- RBAC + audit logs + IP logging are enforced across all modules.
+Implement ALL requirements from:
+1) “Bug List _ Monoskin.xlsx” (Sheet1 + Technical fixes)
+2) “Changes in Figma _ Monoskin.docx”
+Do not skip any item. If something is ambiguous, implement a reasonable default + put a TODO note in code comments.
+
+CONSTRAINTS
+- This is an internal ERP admin system (no doctor portal / patient UI / WhatsApp bot UI / e-comm UI / MR app UI). But we DO need MR Directory + MR Profile + lead assignment to MRs inside admin ERP.
+- Manufacturing UI is not required.
+- Focus on: Dashboard, Leads/CRM, Doctors, Pharmacies, MR Management, Orders, Inventory, Warehouse, Products & Pricing (incl promo/schemes/clinic codes/categories), Logistics (Shipments + Returns), Finance (Invoices/Credit Notes/Collections/Statements), Reports/Analytics, Security/Audit/RBAC.
+- Data confidentiality is critical: exports restricted, sensitive data access permission-based, full audit trail.
+
+TECH STACK (use this unless repo already dictates otherwise)
+- Frontend: Next.js (App Router) + TypeScript + Tailwind + shadcn/ui + React Hook Form + Zod
+- Backend: Node.js + TypeScript (Express or Nest) with REST APIs
+- DB: PostgreSQL + Prisma ORM
+- Auth: JWT sessions + OTP for phone (mock OTP allowed for now) + email login
+- File uploads: S3-compatible (or local in dev) with signed URL pattern
+- Charts: Recharts
+- Maps: Google Maps embed link (no paid SDK required)
+
+DELIVERABLES
+A) Database schema (Prisma) for all entities needed below.
+B) Backend APIs (REST) with RBAC middleware + audit logging + pagination/filter/sort.
+C) Frontend pages with working UI: forms, modals, actions, tabs, attachments, maps, exports/imports.
+D) Seed data for demo so UI shows realistic content (MVP).
+E) Acceptance checklist page or README mapping each feedback ID to implementation.
+
+GLOBAL UI RULES (to remove “dead UI”)
+- Every table row has: View, Edit, Activity/Audit, Related tabs.
+- Every “Create” has a form with validation.
+- Every “Action button” performs an action (even if integration is stubbed).
+- Every status shows a timeline (where relevant).
+- Every export obeys RBAC (Super Admin only where required).
+- All filters: query params + persisted in URL.
+- All lists: server-side pagination + sort + search.
+- All critical actions produce audit events.
+
+SECURITY / RBAC / AUDIT (must implement)
+1) RBAC with role-permission matrix UI:
+   - Admin → Roles/Permissions → matrix (modules × actions). (From docx + bug list)
+   - Permissions enforced in backend for every endpoint.
+2) Audit Logs:
+   - Capture: userId, role, IP, userAgent, action, entityType, entityId, before/after JSON diff, timestamp.
+   - Show audit logs UI with filters (by user, entity, date, action).
+   - Include export logs and deny logs.
+3) IP & action logs must exist (Bug list Security).
+4) Export restricted:
+   - Exports for Pharmacies module must be Super Admin only (Bug list).
+   - Keep a generic export permission for other modules too.
+
+AUTH (must implement)
+- Login supports BOTH email and phone number (docx + bug list).
+- Phone OTP flow (can be mocked in dev): request OTP → verify OTP → issue JWT.
+- Email login: email + password (or magic link if preferred) → JWT.
+
+MODULES & REQUIRED FEATURES (IMPLEMENT ALL BELOW)
+
+1) ADMIN DASHBOARD
+- Shipment Tracking Visibility widget with drill-down:
+  - Count by shipment status + late shipments.
+  - Clicking opens Shipments list filtered by that status.
+- AI-driven Insights panel:
+  - Show insight cards: MR anomalies, delayed shipments, high return SKUs, low stock risk, payment risk.
+  - Each card includes “why” + “recommended action” + deep link.
+- Sales Matrix / Sales Statistics:
+  - Charts + filters: by city/state/territory, doctor/pharmacy segment, SKU, MR, warehouse.
+  - Export (permission-based).
+- Cash Flow Snapshot widget:
+  - 3 month trend + simple 1 month forecast.
+
+2) LEADS & CRM
+Leads List:
+- Advanced filters: state, city, importance, last contacted, last sales date, stage, assigned MR, source.
+- Sorting: High→Low / Low→High for score, revenue, last activity, conversion probability.
+Lead Profile = Doctor Intelligence Hub:
+- Fields/sections: doctor photo upload, designation/specialty, clinic photos, phone, WhatsApp, receptionist number, website + social links, nearby chemist/micro-pharmacy details, Google maps embed/pinned location, notes/files timeline, follow-ups timeline.
+- Quick Actions (sticky/top): Generate Quote, Add Follow-up, Send Sample Request, Mark Converted/Ordered/Lost, Assign/Reassign MR, Send Brochure, Send Product Video.
+- Call CTA + WhatsApp CTA (tel: and wa.me links).
+Follow-up form:
+- meeting notes, outcome, next follow-up date/time, attachments, tags.
+Lead Assignment to MRs:
+- Admin can assign/reassign leads to an MR.
+- MR activity is tracked inside ERP (no MR app): MR’s “Assigned Leads” in MR Profile and MR Directory counts.
+- Lead status updates: Not Contacted → Contacted → Meeting Done → Converted → Lost (configurable).
+
+3) DOCTORS (Converted Leads)
+Doctors Dashboard:
+- KPIs: total, new this month, high importance, at-risk (low engagement/payment delay/failed conversions).
+Doctors List table must include:
+- state/city, last contacted, last sales date, sales till date, importance tag, assigned MR, optional hide internal IDs.
+Import from Excel:
+- “Import Doctors” button + template download; import maps to doctors table.
+Doctor Profile:
+- Include business card upload, clinic photos, social links, chemist linkage, sales generated till date, commercial intelligence:
+  - order behavior, pricing tier, total orders & revenue, visit frequency, average order value.
+- Show carry-over data from lead (if created from lead).
+
+4) PHARMACIES
+- Dashboard mirrors Doctors: KPIs + at-risk.
+- List with filters: city, region, linked doctor, outstanding, credit utilization, activity status, assigned MR.
+- Risk heatmap (P1) using maps markers/heat style (simple markers acceptable).
+- Export = Super Admin only (must enforce UI + backend).
+
+5) MR MANAGEMENT (ERP ONLY)
+MR Directory:
+- Monitoring dashboard: filters, sorting, columns for targets, follow-ups due today.
+- Explain “+X today” indicators with tooltips.
+MR Profile:
+- reporting manager link, last login, last activity,
+- assigned doctors/leads with data protection,
+- conversions, conversion rate, engagement score,
+- targets with progress bars,
+- tabs: KPIs, assigned leads, GPS visits (simulate with check-in logs), order impact, samples, attendance, activity timeline.
+MR Analytics:
+- Conversion funnel (from bug list).
+
+6) ORDERS
+Orders List:
+- Header titles (bug list says missing titles) — ensure proper table headings.
+- Filters: status (Draft, Pending, Confirmed, Dispatched, Delivered, Cancelled), date range, doctor/pharmacy, MR, warehouse, payment mode.
+Create Order:
+- Search + auto-suggest Doctor/Pharmacy.
+- Add products with qty; compute tax/discount; show summary.
+Review & Submit:
+- Summary includes: products, tax, discount, payment mode (Credit/Cash/UPI/Bank), credit terms, total.
+Customer Statements:
+- Add “Send Statement” via Email (and placeholder for WhatsApp), highlight overdue accounts.
+Order Details:
+- Add tabs: Shipment (courier, tracking id, status), Invoices (invoice list, download, send invoice + payment link).
+
+7) INVENTORY (central stock intelligence)
+- Change wording from “reserve” to “sold” where required (bug list).
+- Historical stock flow trend chart.
+- Stock movements: add “Reason Tag” (doctor request / clearance / promo / damage / transfer).
+- Minimum Stock Threshold per product (and optionally per warehouse) with automated alerts.
+- Non-moving stock identification.
+- FEFO/FIFO rules for picking suggestion (logic can be basic).
+- Near-expiry risk view.
+
+8) WAREHOUSE (execution only)
+Warehouse List:
+- Add warehouse status badge (Active/Inactive/Under Maintenance).
+- Add utilization % visual progress bar.
+- Add warehouse contact number/email details.
+Inward GRN:
+- Add filters for supplier and SKU.
+- Create GRN must support attachments (scanned invoices etc).
+Transfers:
+- Transfers form + transfer details must include proof of delivery upload (signed slip/photo).
+Picking/Packing/Dispatch:
+- Packing must include photo/video proof + seal number.
+
+9) PRODUCTS & PRICING (commercial backbone)
+Products:
+- Must support product categories creation.
+Product Details:
+- Barcode field + brochure upload + images + product text.
+Pricing:
+- Pricing slab performance analytics: revenue, orders, margin by slab.
+Schemes:
+- Setting to add eligible products in a scheme (multi-select).
+Promo Codes:
+- Must define purpose/channel: Doctor/Pharmacy vs Online vs Both.
+- Stackability with Schemes: Allow/Block.
+- Validity, usage limits, eligible SKUs/categories.
+- Status lifecycle: Draft/Scheduled/Active/Paused/Expired.
+- ROI tracker next to usage: cost vs revenue uplift, ROI%.
+Clinic Codes (Admin module):
+- Must have filters, activate/deactivate buttons.
+- Generate redemption report (clinic code usage report).
+(Note: even if patient UI doesn’t exist, admin management must exist.)
+
+10) LOGISTICS — SHIPMENTS
+Shipments workflow transparency:
+- Order → Package created (proof) → Shipment created → Dispatched → In transit → Delivered
+- Status timeline visible on Shipment detail.
+Shipment statuses:
+- Ready for Dispatch, Dispatched, In Transit, Out for Delivery, Delivered, Attempted, Returned, Cancelled.
+Label generation:
+- Mode 1: upload label file (PDF/image).
+- Mode 2: integration stub endpoint for courier API label generation.
+Action buttons:
+- Resend tracking SMS (stub), Auto WhatsApp tracking (stub), Contact carrier (mailto/tel stub).
+Shipments List:
+- Filters: status, date, carrier, warehouse, doctor/pharmacy, orderId/shipmentId/trackingId.
+Anti-malpractice / discrepancy protection:
+- Packing checklist + proof required
+- Seal number + optional weight
+- Discrepancy ticket workflow with evidence + audit log.
+
+11) LOGISTICS — RETURNS
+Returns workflow must include:
+- Photos upload
+- Inspector remarks / internal notes
+- Pickup partner + pickup timeline
+- Linked credit note / resolution outcome
+- Auto inventory adjustment on approval
+Returns reason categorization + analytics.
+
+12) FINANCE — INVOICES / CREDIT NOTES / COLLECTIONS
+Invoice generation clarity:
+- Implement one: auto on dispatch OR manual “Generate Invoice” button (choose manual if uncertain) and show clearly.
+Send invoice + payment link:
+- Email sending can be stubbed; still generate a sharable payment URL.
+Credit notes:
+- Must have audit trail: created by, approved by, applied by, timestamps.
+GST handling improvements:
+- CGST/SGST split, reversals/adjustments, GST report export (basic).
+Collections/Reconciliation:
+- Explain “pending allocation”.
+- Bounced cheque flow.
+- Auto receipt mapping to invoices and auto-close on clearance.
+- Collection source tracking (MR/NEFT/UPI/etc).
+Bulk payment reminders + segmented views.
+
+13) HR & EMPLOYEES
+Employee profiles:
+- personal details, role, manager, location, employment type,
+- KYC + docs,
+- attendance/leave summary,
+- salary visibility permission-based,
+- performance metrics.
+
+14) REPORTS / ANALYTICS / DIAGNOSTICS
+Reports:
+- Saved views, scheduled reports (can be cron stub), quick filters, exports.
+Integration diagnostics:
+- Sync logs + retries + webhook diagnostics (even if only stubbed).
+
+IMPLEMENTATION PLAN (must follow)
+1) Build DB schema + seed.
+2) Build backend APIs with RBAC + audit logs + pagination/filter/sort.
+3) Wire frontend pages: ensure all navigation works.
+4) Implement all forms/modals/actions listed above.
+5) Add charts/maps and exports/imports.
+6) Add acceptance checklist mapping every “Bug List” item + docx section to the implemented page/API.
+7) Provide README: how to run, env vars, and where each feature is implemented.
+
+IMPORTANT: “NOTHING MISSING” CHECK
+Before finishing, cross-check every row in “Bug List _ Monoskin.xlsx” and every section in “Changes in Figma _ Monoskin.docx”.
+Create a “/admin/verification” page (or a README table) listing:
+- Feedback item → Page → UI implemented? → API implemented? → DB implemented?
+Mark each as DONE.
+
+OUTPUT EXPECTATION
+When I run the app, I can click through every module and:
+- Create/edit/view records,
+- Upload files,
+- See timelines/statuses,
+- Apply filters/sorts,
+- View audit logs,
+- Export/import where allowed,
+- And nothing in navigation is non-functional.

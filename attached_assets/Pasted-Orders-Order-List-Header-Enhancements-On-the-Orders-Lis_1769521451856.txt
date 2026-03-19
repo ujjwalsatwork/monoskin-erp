@@ -1,0 +1,32 @@
+Orders – Order List (Header Enhancements)
+On the Orders List screen, the header section needs to be enhanced to show high-level operational insights. The header should display key summary tiles such as Orders With Exceptions, Orders Delivered This Month, and Orders Currently Being Delivered. In addition, a Google Maps Marker View should be added to visually represent orders geographically, helping teams understand delivery concentration and potential credit or logistics exposure at a glance.
+Screen: Orders
+Sub-screen: Order List – Header Section
+
+On the same Orders List screen, a comprehensive filter panel needs to be added to help users quickly narrow down orders. The filters should allow users to filter orders by Status (Draft, Pending, Dispatched, Delivered, Cancelled), Warehouse, Doctor or Pharmacy, Date Range, and MR Assigned. These filters should work together so users can combine multiple conditions and efficiently track, review, and manage orders without opening each record individually. Also  under create order, select customer dropdown is not working.
+
+Orders – Create Order (Doctor/Pharmacy Selection)
+On the Create Order screen, the Doctor or Pharmacy selection field needs to support search and auto-suggest instead of manual scrolling. As soon as a Doctor or Pharmacy is selected, the system should immediately display credit information and past order insights, allowing the user to understand credit exposure and ordering behavior before proceeding further with the order creation.
+Screen: Orders
+Sub-screen: Create Order – Customer Selection
+
+Orders – Create Order (Review & Submit)
+On the Review & Submit sub-screen of the Create Order flow, a complete order summary needs to be shown before final submission. This summary should clearly display selected products, applicable taxes, discounts, payment mode (Credit or Prepaid), and remarks. Once the user clicks Submit, the system should automatically trigger a credit check to validate whether the order can proceed, ensuring financial control before order confirmation.
+Screen: Orders
+Sub-screen: Create Order – Review & Submit
+
+Orders – Customer Statements
+On the Customer Statements screen, users should be able to send statements directly via Email or WhatsApp from the dashboard without exporting files manually. Additionally, accounts that are overdue by more than 30 days should be clearly highlighted so that finance and sales teams can quickly identify and follow up on high-risk customers.
+Screen: Orders
+Sub-screen: Customer Statements
+
+
+
+
+
+Orders – Order Details
+On the Order Details screen, two new tabs need to be added for better traceability. A Shipment tab should show courier name, tracking ID, and estimated delivery date (ETA). An Invoices tab should display invoice ID, tax breakup, and provide a download link for the invoice. These tabs will allow users to access logistics and billing information directly from the order without switching modules.
+Screen: Orders
+Sub-screen: Order Details – Shipment & Invoices Tabs
+
+Under orders on the create orders screen the select customer dropdown is not working

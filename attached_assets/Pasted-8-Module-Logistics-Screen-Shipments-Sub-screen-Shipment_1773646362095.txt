@@ -1,0 +1,42 @@
+8) Module: Logistics
+Screen: Shipments
+Sub-screen: Shipment Listing / Shipment Detail (Status Visibility + Data Auto-population)
+Story:
+ As an Admin/Operations user, I want shipment status to be clearly visible and shipment data to auto-populate, so I can track and test logistics workflows without confusion or missing information.
+Requirements (based on current Shipment Detail screen screenshot):
+Fix Status Visibility
+The status tag/pill is not clearly visible.
+Update status tag colors to ensure high contrast and readability across all statuses (e.g., Created, Packed, In Transit, Delivered, Failed, Returned).
+Fix Data Auto-population Issue
+Shipment screen data is not auto-populating currently, which blocks testing.
+Ensure shipment details, shipment items, tracking progress, and timeline populate automatically from backend data.
+Label Generation Integration (Missing)
+Add functional Shipment Label Generation integration (carrier-based).
+Button should exist on shipment detail: Print/Generate Label
+Action Buttons (Missing)
+ Add shipment-level actions (top-right or actions menu):
+Resend Tracking SMS
+Auto WhatsApp Tracking Updates (toggle or trigger)
+Contact Carrier (call/email/raise ticket option)
+Packaging Proof (Missing)
+Add upload support for Photo/Video Proof during packaging.
+Store evidence in shipment records to prevent malpractice.
+Proof should be visible in the shipment detail page (new tab/section: “Packaging Proof”).
+Screen: Returns
+Sub-screen: Return Detail Page
+Story:
+ As a Warehouse/Inspector user, I want to attach evidence, notes, and pickup tracking for returns, so return handling is fully traceable and auditable.
+Requirements:
+Add Photos of Returned Items (upload/attach by warehouse/inspector)
+Add Internal Notes / Inspector Remarks (text field)
+Add Return Pickup Partner (carrier/partner name) + Pickup Timeline (status checkpoints)
+Add Linked Credit Note / Resolution (credit note ID / refund / replacement / decision)
+Screen: Logistics Dashboard (New)
+Story:
+ As an Admin/Operations user, I want a Logistics dashboard that shows live tracking and automated customer updates, so I can monitor deliveries and communication centrally.
+Requirements:
+Create a Logistics Dashboard
+Must include:
+Live Tracking Link (auto-generated from carrier)
+Auto SMS/WhatsApp delivery updates to doctors/pharmacies
+Dashboard should include key details similar to the shipment detail screenshot (tracking progress, shipment status, carrier, tracking number, warehouse, expected delivery, etc.).

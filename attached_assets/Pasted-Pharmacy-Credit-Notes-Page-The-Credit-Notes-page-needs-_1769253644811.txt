@@ -1,0 +1,48 @@
+Pharmacy – Credit Notes Page
+The Credit Notes page needs clearer traceability and context for every adjustment made. Each credit note should show a clickable audit trail indicating who created it, who approved it, and when it was applied. The page should allow documents such as damaged product images, return slips, and pharmacist notes to be attached directly to the credit note. A standardized reason selection (returns, price adjustment, billing error, near expiry) should be added so data remains consistent. At the top of the page, a small analytics view showing credit notes grouped by reason will help identify frequent issues. A GST applicability flag should exist within each credit note so eligible cases are automatically reflected in GST reports.
+Pharmacy – Invoice Detail Page
+The invoice detail page should provide better payment clarity and control. A send invoice or payment link action should be available directly on the page. Discounts should be displayed clearly in a structured breakup to avoid accidental stacking. The page should indicate whether the invoice was system-generated or manually created. Credit usage should be restricted so invoices cannot be created if the pharmacy does not have pre-approved credit.
+Pharmacy – Receipts Page
+The receipts page should clearly explain the state of every payment received. Allocation status should be visible as unallocated, partially allocated, or fully allocated. Receipts should be easily matched to invoices, and once matched successfully, the related invoice should auto-close. A collection source field should indicate whether the payment came via MR, NEFT, cheque, or field representative. GST impact should be handled automatically if a receipt fails or a cheque bounces. Filters for payment mode, allocation status, and date range should be available for faster reconciliation.
+Warehouse – Inventory / Stock Movement Page
+The inventory movement page should clearly show stock accountability. Every adjustment must display the quantity before and after the change. A mandatory reason should be captured for all stock changes. Each movement entry should link to an audit log that shows who performed the action and when it occurred.
+Warehouse – Order Fulfilment Page
+The order fulfilment page should reflect the relationship between fulfilled orders and inventory movement. Once an order is fulfilled, the corresponding stock deduction should be traceable. The page should also indicate if fulfilment has any impact on pending invoices.
+Finance – AR Ageing Page
+The AR ageing page should support collections and follow-ups more effectively. A PDF export option should allow sharing ageing summaries with customers. Each customer should have a clearly assigned collection owner such as an MR or finance executive. Notes should be available per customer to track follow-up conversations and commitments. The page should show the last interaction date, such as payment, visit, or call, to help prioritize collections.
+Finance – GST Reports Page
+The GST reports page should be compliance-ready. Reports for GSTR-1 and GSTR-3B should be exportable in Excel and JSON formats. Returns and credit notes should automatically trigger reverse GST handling where applicable. Each filing period should show a clear status such as filed, pending, or error. A mismatch view should compare invoices against GST returns to highlight differences. GSTIN validation status should be visible to indicate whether a customer GST number is valid or missing.
+
+HR – Employees List Page
+The employees list page should act as an entry point to detailed employee records. Employee names should be clickable and open a full profile. Profile photos should be visible for easy identification. Columns for employment type and work location should be added to give quick context.
+HR – Employee Profile Page
+The employee profile page should function as a complete employee record. It should display reporting manager details, linked documents such as offer letters and NDAs, salary information with restricted edit access, attendance and leave summaries, performance or KPI snapshots, and emergency contact details.
+HR – Attendance Page
+The attendance page should provide more insight than basic check-in and check-out. GPS-based punch verification can be included where applicable. Break durations should be tracked. Late entry and early exit patterns should be flagged. A weekly and monthly view toggle should be available. Alerts via WhatsApp or email should be triggered for irregular attendance.
+
+
+
+Compliance – Compliance Page
+The compliance page should function as a task and reminder system rather than an accounting view. Each compliance item should behave like a task with statuses such as pending, ongoing, or completed. Tasks should be assignable to teams such as HR, finance, or admin. Due dates, reminders, and document attachments should be supported. A read-only audit view should be available for reviews.
+
+Reports & Analytics – Reports Listing Page
+The reports listing page should help users quickly find and understand reports. Reports should be filterable by frequency such as daily, weekly, monthly, or on-demand. A quick preview should be available before generating full reports. Usage logs should record who generated, scheduled, or exported reports, especially for regulatory data.
+Reports & Analytics – Custom Reports Page
+The custom reports page should maintain continuity of work. Previously created and recently run reports should appear in a saved views library. Custom reports should support scheduling so they can run automatically on a weekly or monthly basis.
+Reports & Analytics – Sales Analytics Page
+The sales analytics page should explain performance trends clearly. Sales should be broken down by customer segment such as doctors, pharmacies, hospitals, and clinics. Area-wise sales views should be available. Users should be able to switch between month-on-month and year-on-year comparisons. Regional heatmaps should visualize sales spread. Conversion funnels should show MR performance from leads to repeat orders. Leaderboards should highlight top-performing MRs, products, and doctors by revenue.
+
+Security – Audit Logs Page
+The audit logs page should provide full accountability. Every critical action should record IP address and location. Logs should be clickable by user to view individual activity history. Export options should allow logs to be downloaded for audits. A retention policy should control how long logs are stored. Before-and-after snapshots should be captured for sensitive changes such as pricing, stock levels, and role updates.
+Security – Access Logs Page
+The access logs page should protect sensitive data. It should flag when sensitive fields are accessed. Suspicious behavior such as mass copying or abnormal access should be detected and flagged. The system should support automatic blocking or alerts when such activity is identified.
+
+Master Data – Users & Roles Page
+The users and roles page should clearly define access control. A role-based permission matrix should show what each role can view or edit. Login history should be visible for traceability. Users should be deactivated cleanly when employees leave.
+Master Data – Territories Page
+The territories page should clearly explain how regions are defined. Territory creation should show states and cities included. It should be clear whether boundaries are editable. A read-only heatmap should visualize territory coverage, MR load, and penetration.
+Master Data – Tax & HSN Page
+The tax and HSN page should support audits and compliance. Products should be tagged by category such as RX, cosmetics, or devices. Reverse charge applicability should be configurable per HSN for B2B pharma cases.
+
+Integrations – Integrations Page
+The integrations page should make failures visible and manageable. Each integration should support auto-retry on failure. Alerts should trigger when syncs fail repeatedly or stop for extended periods. Sync history and webhook logs should be accessible for debugging. Configuration access should be limited to super administrators.

@@ -1,0 +1,45 @@
+# Monoskin ERP
+
+## Overview
+Monoskin ERP is a clinical-grade enterprise resource planning system designed to manage a comprehensive suite of business operations. Its core purpose is to streamline and integrate processes across warehouses, inventory, orders, customer relationship management (CRM), medical representative (MR) management, logistics, finance, and reporting. The system provides real-time analytics and robust reporting capabilities to support informed decision-making.
+
+## User Preferences
+The agent should prioritize high-level architectural and design decisions over granular implementation details. Avoid making changes to the project structure unless absolutely necessary and after explicit confirmation. When proposing changes, provide a clear rationale and explain the impact on the overall system. Focus on maintaining consistency in UI/UX through the established component library and theme tokens.
+
+## System Architecture
+Monoskin ERP employs a full-stack architecture with a React 18 frontend, an Express 5 backend, and a PostgreSQL database with Drizzle ORM.
+
+**UI/UX Decisions:**
+- **Component Library:** Utilizes Shadcn UI for a consistent design system.
+- **Reusable Components:** Features a comprehensive set of shared components (e.g., `ActivityTimeline`, `QuickActionsCard`, `SalesChart`, `BusinessCard`, `StockLevelChart`, `StatusTimeline`, `ShippingLabel`, `ARAgeingChart`) for standardized UI across detail pages.
+- **Theming:** Adheres to theme tokens for colors and styling, supporting dark mode.
+- **Accessibility & Testability:** Incorporates `data-testid` attributes for interactive and display elements.
+
+**Technical Implementations:**
+- **Frontend:** Built with React 18, TypeScript, Vite, TailwindCSS, and uses React Router DOM for routing and TanStack React Query for state management. Recharts is used for data visualizations.
+- **Backend:** Developed with Express 5 and TypeScript, providing RESTful APIs for data interaction.
+- **Database:** PostgreSQL is used as the primary data store, managed via Drizzle ORM. Key tables include `users`, `products`, `warehouses`, `inventory`, `doctors`, `orders`, `leads`, `invoices`, `approvals`, `creditNotes`, `taxHSNCodes`, `territories`, `loginHistory`, `territoryBoundaries`, `integrationSyncRuns`, `integrationWebhookEvents`, `integrationAlerts`, `suspiciousActivities`, `dataRetentionPolicies`, and `maskedDataAccessLogs`.
+- **Authentication:** Integrates with Replit Auth using OpenID Connect for secure user authentication and session management.
+- **Authorization (RBAC):** Implements a comprehensive Role-Based Access Control system with 11 distinct user roles and a feature-based permission system covering 14 feature groups. Backend APIs are secured with authorization middleware, and the frontend uses a `RouteGuard` component to filter navigation and protect routes based on user permissions.
+- **Workflow Management:** Includes approval workflows, lead deduplication with merge capabilities, and credit note application processes.
+- **Reporting:** Features a custom report builder with multiple data sources and column selection, pre-built analytics and KPI dashboards, persisted report usage logs, regulatory audit trail, and enhanced sales analytics with segment/area/time comparisons, product lifecycle tracking, MR funnel, and leaderboard.
+- **Data Operations:** Supports CSV import/export functionalities with robust status tracking.
+- **File Management:** Utilizes object storage for handling uploads (e.g., return photos, warehouse task proofs).
+
+**Feature Specifications:**
+- **Core ERP Modules:** Dashboard, Lead Management (CRM with business card photo upload persisted to object storage, full lead-to-doctor conversion via `POST /api/leads/:id/convert-to-doctor` which copies all fields — profile photo, clinic images, social links, contact details — sets `convertedDoctorId`, and navigates to the new doctor profile), Doctor & Pharmacy Management (with enriched Doctor Detail: Lead Origin card showing business card image, clinic photos, contact info, social links, and notes from the original lead; Favourite Products panel, MR Notes & History tab, Intelligence & Metadata card with AI order behaviour/manual pricing tier/visit frequency/tags/timestamps), Order Management, Inventory Tracking (with near-expiry alerts), Warehouse Operations (GRN, transfers, picking, packing, dispatch), Product Catalog, Shipment Tracking, Returns Management (tabbed detail with photo evidence upload, inspector remarks, pickup partner/timeline, linked credit note, resolution type).
+- **Logistics Dashboard** (`/logistics`): KPI cards (Active Shipments, In Transit, Out for Delivery, Delivered Today, Failed/Returned, Pending Returns), live tracking table with per-row SMS/WhatsApp actions and carrier tracking links, auto-communication hub (bulk WhatsApp/SMS), status breakdown chart, pending returns sidebar, warehouse activity card.
+- **Financial Modules:** Invoices, Receipts, AR Aging, Credit Notes.
+- **HR Modules:** Employees (with detailed profile pages: photo upload via camera-overlay on avatar using object storage, reporting manager, work location, employment type, KYC status, linked documents, performance snapshot, salary with restricted access, attendance & leave summaries; enhanced Leave tab with Request Leave button+dialog, pending leave applications list, company holidays view, CSV export; Workflows tab with Onboarding Checklist by dept IT/HR/Finance, Exit Process Workflow with clearance tracking, HR Audit Easy Mode checklist), Attendance (GPS verification, break tracking, late/early detection, daily/weekly/monthly views, irregular pattern alerts), Leave Management (leave requests with approval workflow, leave balances by type, company holiday calendar tab, data export), Compliance (repurposed as Team Tasks & Reminders system — tasks with Pending/Ongoing/Completed/Blocked status, team filters Accounts/HR/Manufacturing/IT/Logistics/Management/Operations, priority levels, due date tracking, notify team dialog with channel selection, set reminder, list view + kanban board view), Payroll (monthly salary sheet generation with period selector, KPI cards, workflow stepper Draft→Generated→Approved→Disbursed, expandable salary breakdown per employee, salary slip dialog, CSV export), Holiday Calendar (dedicated page at `/hr/holiday-calendar` with 12-month mini-calendar grid view + list view, type filters Public/Company/Restricted, optional toggle, add/edit/delete holidays, date click to pre-fill form, employee-visible).
+- **Security:** Audit logs (with date/user filters, before/after snapshots, data retention policies), access logs (persisted suspicious activity detection with resolution workflow, masked data action tracking), data masking (click-to-call, WhatsApp quick actions with compliance logging), export controls.
+- **Master Data Management:** Users & Roles (login history tracking, user deactivation with confirmation, role-feature permission matrix with grouped categories and tooltips, custom Role Templates with full CRUD — per-module CRUD checkbox matrix, user assignment/unassignment, template-based API authorization), Territories (boundary management with pincode/city/district rules, enhanced region heatmaps with density indicators, configuration logic display), Tax/HSN Master (audit-ready with category tags — Dermatology/Cosmetics/RX/Device/General/Nutraceutical/Surgical — inline RCM toggle per row, category filter pills with RCM count indicators, audit summary panel, CSV export, auto GST-split on rate entry, full CRUD dialog).
+- **Integrations:** Integration dashboard with sync history tracking (per-run records, direction, attempt count), webhook diagnostics (event types, payload viewer, processing times), failure alerts management (severity-based with acknowledge/resolve/mute workflow), full RBAC enforcement (Full Access: Super Admin + Admin Ops; Read Only: Finance/Warehouse/Logistics/Sales/Analytics; No Access: Warehouse Staff, MR, HR/Compliance) with access banners and disabled controls for non-authorized roles, auto-retry policy toggle per integration card with expandable limit/interval config, auto-retry settings in configure dialog, Access Control tab with current-user access card, Super Admin restricted operations panel, and full 11-role permission matrix table.
+
+## External Dependencies
+- **Database:** PostgreSQL (specifically Neon for deployment)
+- **Authentication:** Replit Auth (OpenID Connect)
+- **Payment Gateway:** Razorpay (for payment links, verification, refunds)
+- **Logistics/Shipping:** Shiprocket (for order creation, AWB generation, tracking)
+- **Spreadsheet Integration:** Google Sheets (for data export)
+- **Communication:** WhatsApp Business (for notifications, order updates)
+- **Accounting System:** Tally ERP (for syncing invoices, payments, ledgers)
